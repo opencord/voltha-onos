@@ -29,9 +29,14 @@ ONOS_IMAGENAME           := ${DOCKER_REGISTRY}${DOCKER_REPOSITORY}voltha-onos:${
 
 ## Docker labels. Only set ref and commit date if committed
 DOCKER_LABEL_VCS_URL     ?= $(shell git remote get-url $(shell git remote))
-DOCKER_LABEL_VCS_REF     ?= $(shell git diff-index --quiet HEAD -- && git rev-parse HEAD || echo "unknown")
-DOCKER_LABEL_COMMIT_DATE ?= $(shell git diff-index --quiet HEAD -- && git show -s --format=%cd --date=iso-strict HEAD || echo "unknown" )
 DOCKER_LABEL_BUILD_DATE  ?= $(shell date -u "+%Y-%m-%dT%H:%M:%SZ")
+DOCKER_LABEL_COMMIT_DATE = $(shell git show -s --format=%cd --date=iso-strict HEAD)
+
+ifeq ($(shell git ls-files --others --modified --exclude-standard 2>/dev/null | wc -l | sed -e 's/ //g'),0)
+  DOCKER_LABEL_VCS_REF = $(shell git rev-parse HEAD)
+else
+  DOCKER_LABEL_VCS_REF = $(shell git rev-parse HEAD)+dirty
+endif
 
 .PHONY: docker-build
 
