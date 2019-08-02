@@ -19,6 +19,7 @@ set -x
 mkdir -p local_imports/oar
 cp ../olt/app/target/*.oar local_imports/oar/
 cp ../sadis/app/target/*.oar local_imports/oar/
-cp ../aaa/target/*.oar local_imports/oar/
-cp ../dhcpl2relay/target/*.oar local_imports/oar/
+cp ../aaa/app/target/*.oar local_imports/oar/
+cp ../dhcpl2relay/app/target/*.oar local_imports/oar/
+cp ../kafka-onos/target/*.oar local_imports/oar/
 

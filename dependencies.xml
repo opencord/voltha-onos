@@ -24,10 +24,11 @@
     <version>fake</version>
 
     <properties>
-        <olt.version>2.1.0</olt.version>
-        <sadis.version>2.2.0</sadis.version>
-        <aaa.version>1.8.0</aaa.version>
-        <dhcpl2relay.version>1.5.0</dhcpl2relay.version>
+        <olt.version>3.0.1</olt.version>
+        <sadis.version>3.1.0</sadis.version>
+        <aaa.version>1.9.0</aaa.version>
+        <dhcpl2relay.version>1.6.0</dhcpl2relay.version>
+        <kafka.version>1.1.0</kafka.version>
     </properties>
 
     <build>
@@ -54,15 +55,22 @@
                         </artifactItem>
                         <artifactItem>
                             <groupId>org.opencord</groupId>
-                            <artifactId>aaa</artifactId>
+                            <artifactId>aaa-app</artifactId>
                             <version>${aaa.version}</version>
                             <type>oar</type>
                             <overWrite>true</overWrite>
                         </artifactItem>
                         <artifactItem>
                             <groupId>org.opencord</groupId>
-                            <artifactId>dhcpl2relay</artifactId>
+                            <artifactId>dhcpl2relay-app</artifactId>
                             <version>${dhcpl2relay.version}</version>
+                            <type>oar</type>
+                            <overWrite>true</overWrite>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.opencord</groupId>
+                            <artifactId>kafka</artifactId>
+                            <version>${kafka.version}</version>
                             <type>oar</type>
                             <overWrite>true</overWrite>
                         </artifactItem>

@@ -59,6 +59,7 @@ build: docker-build
 local-onosapps:
 	mkdir -p local_imports/oar
 ifdef LOCAL_ONOSAPPS
+	rm -rf local_imports/oar
 	./get-local-oars.sh
 endif
 
