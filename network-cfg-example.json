@@ -1,0 +1,65 @@
+{
+  "devices": {
+    "of:00000000ac110001": {
+      "accessDevice": {
+        "uplink": "65536",
+        "vlan": "1"
+      },
+      "basic": {
+        "driver": "voltha"
+      }
+    }
+  },
+  "apps": {
+    "org.opencord.dhcpl2relay": {
+      "dhcpl2relay": {
+        "useOltUplinkForServerPktInOut": true
+      }
+    },
+    "org.opencord.aaa": {
+      "AAA": {
+        "radiusIp": "172.17.0.1",
+        "radiusServerPort": "1812",
+        "radiusSecret": "SECRET",
+        "nasIp": "172.17.0.1",
+        "radiusConnectionType": "socket"
+      }
+    },
+    "org.opencord.sadis": {
+      "sadis": {
+        "integration": {
+          "cache": {
+            "enabled": true,
+            "maxsize": 50,
+            "ttl": "PT1m"
+          }
+        },
+        "entries": [
+          {
+            "id": "BBSIMOLT000",
+            "uplinkPort": 65536,
+            "hardwareIdentifier": "00:00:ac:11:00:01",
+            "ipAddress": "172.17.0.1",
+            "nasId": "BBSIMOLT000"
+          },
+          {
+            "id": "BBSM00000001-1",
+            "cTag": 900,
+            "sTag": 900,
+            "nasPortId": "BBSM00000001-1",
+            "circuitId": "BBSM00000001-1",
+            "remoteId": "BBSIMOLT000"
+          },
+          {
+            "id": "BBSM00000002-1",
+            "cTag": 901,
+            "sTag": 901,
+            "nasPortId": "BBSM00000002-1",
+            "circuitId": "BBSM00000002-1",
+            "remoteId": "BBSIMOLT000"
+          }
+        ]
+      }
+    }
+  }
+}
