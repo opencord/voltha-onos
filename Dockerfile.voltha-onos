@@ -71,6 +71,7 @@ COPY network-cfg.json $KARAF_ROOT/../config/network-cfg.json
 
 RUN touch $ONOS/apps/org.onosproject.hostprovider/active
 RUN touch $ONOS/apps/org.onosproject.openflow-base/active
+RUN touch $ONOS/apps/org.onosproject.lldpprovider/active
 
 # Label image
 ARG org_label_schema_version=unknown
