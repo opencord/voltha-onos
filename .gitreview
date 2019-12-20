@@ -3,4 +3,4 @@ host=gerrit.opencord.org
 port=29418
 project=voltha-onos.git
 defaultremote=origin
-defaultbranch=master
+defaultbranch=onos-2.2

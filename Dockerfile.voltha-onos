@@ -34,11 +34,11 @@ fi
 
 
 # Unpack and install specific apps from download stage
-FROM onosproject/onos:1.13.9 as install
+FROM onosproject/onos:2.2.0 as install
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV ONOS=/root/onos
-ENV KARAF_VERSION=3.0.8
+ENV KARAF_VERSION=4.2.6
 ENV KARAF_ROOT=${ONOS}/apache-karaf-${KARAF_VERSION}
 ENV APPS_ROOT=${ONOS}/apps
 ENV KARAF_M2=${KARAF_ROOT}/system
@@ -48,6 +48,9 @@ ENV APP_INSTALL_ROOT=/expand
 # Copy the downloaded artifact to the install stage container
 COPY --from=download ${DOWNLOAD_ROOT} ${DOWNLOAD_ROOT}
 
+RUN apt-get update
+RUN apt-get install unzip -y
+
 # Install the applications
 COPY app-install.sh ./app-install.sh
 RUN chmod 755 ./app-install.sh
@@ -55,11 +58,11 @@ RUN ./app-install.sh
 
 
 # Create the final image coping over the installed applications from the install stage
-FROM onosproject/onos:1.13.9
+FROM onosproject/onos:2.2.0
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV ONOS=/root/onos
-ENV KARAF_VERSION=3.0.8
+ENV KARAF_VERSION=4.2.6
 ENV KARAF_ROOT=${ONOS}/apache-karaf-${KARAF_VERSION}
 ENV KARAF_M2=${KARAF_ROOT}/system
 ENV APPS_ROOT=${ONOS}/apps
