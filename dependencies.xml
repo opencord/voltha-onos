@@ -26,9 +26,9 @@
     <properties>
         <olt.version>3.0.1</olt.version>
         <sadis.version>3.1.0</sadis.version>
-        <aaa.version>1.9.0</aaa.version>
-        <dhcpl2relay.version>1.6.1</dhcpl2relay.version>
-        <kafka.version>1.1.0</kafka.version>
+        <aaa.version>1.10.0</aaa.version>
+        <dhcpl2relay.version>1.6.2</dhcpl2relay.version>
+        <kafka.version>1.2.0</kafka.version>
     </properties>
 
     <build>
