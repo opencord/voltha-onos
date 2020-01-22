@@ -34,7 +34,7 @@ fi
 
 
 # Unpack and install specific apps from download stage
-FROM onosproject/onos:1.13.9 as install
+FROM onosproject/onos:1.13.10 as install
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV ONOS=/root/onos
@@ -55,7 +55,7 @@ RUN ./app-install.sh
 
 
 # Create the final image coping over the installed applications from the install stage
-FROM onosproject/onos:1.13.9
+FROM onosproject/onos:1.13.10
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV ONOS=/root/onos
