@@ -24,11 +24,11 @@
     <version>fake</version>
 
     <properties>
-        <olt.version>4.0.0</olt.version>
-        <sadis.version>4.0.1</sadis.version>
-        <aaa.version>2.0.0</aaa.version>
-        <dhcpl2relay.version>2.0.0</dhcpl2relay.version>
-        <kafka.version>2.0.0</kafka.version>
+        <olt.version>4.0.1</olt.version>
+        <sadis.version>5.0.0</sadis.version>
+        <aaa.version>2.0.1</aaa.version>
+        <dhcpl2relay.version>2.0.1</dhcpl2relay.version>
+        <kafka.version>2.1.1</kafka.version>
     </properties>
 
     <build>
