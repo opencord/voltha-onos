@@ -1,15 +1,4 @@
 {
-  "devices": {
-    "of:00000000ac110001": {
-      "accessDevice": {
-        "uplink": "1048576",
-        "vlan": "1"
-      },
-      "basic": {
-        "driver": "voltha"
-      }
-    }
-  },
   "apps": {
     "org.opencord.dhcpl2relay": {
       "dhcpl2relay": {
@@ -41,55 +30,59 @@
         },
         "entries": [
           {
-            "id": "BBSIM_OLT_0",
+            "id": "EC1829000885",
             "uplinkPort": 1048576,
-            "hardwareIdentifier": "00:00:ac:11:00:01",
-            "ipAddress": "172.17.0.1",
-            "nasId": "BBSIM_OLT_0"
+            "hardwareIdentifier": "00:00:0a:40:01:d0",
+            "ipAddress": "10.64.1.208",
+            "nasId": "ATLEDGEVOLT1"
           },
           {
-            "id": "BBSM00000001-1",
-            "cTag": 900,
-            "sTag": 900,
-            "nasPortId": "BBSM00000001-1",
-            "circuitId": "BBSM00000001-1",
-            "remoteId": "BBSIM_OLT_0",
-            "technologyProfileId": 64,
-            "upstreamBandwidthProfile": "Default",
-            "downstreamBandwidthProfile": "Default"
+            "id": "ALCLfa5b91ba-1",
+            "nasPortId": "PON 1/1/3/1:4.1.1",
+            "circuitId": "PON 1/1/3/1:4.1.1-CID",
+            "remoteId": "ATLEDGEVOLT1-RID",
+            "uniTagList": [
+              {
+                "ponCTag": 20,
+                "ponSTag": 13,
+                "technologyProfileId": 64,
+                "downstreamBandwidthProfile": "Bronze_Download",
+                "upstreamBandwidthProfile": "Bronze_Upload",
+                "isDhcpRequired": true
+              }
+            ]
           },
           {
-            "id": "BBSM00000001-2",
-            "cTag": 900,
-            "sTag": 900,
-            "nasPortId": "BBSM00000001-2",
-            "circuitId": "BBSM00000001-2",
-            "remoteId": "BBSIM_OLT_0",
-            "technologyProfileId": 64,
-            "upstreamBandwidthProfile": "Default",
-            "downstreamBandwidthProfile": "Default"
+            "id": "ALPHe32e82df-1",
+            "nasPortId": "PON 1/1/3/1:10.1.1",
+            "circuitId": "PON 1/1/3/1:10.1.1-CID",
+            "remoteId": "ATLEDGEVOLT1-RID",
+            "uniTagList": [
+              {
+                "ponCTag": 25,
+                "ponSTag": 13,
+                "technologyProfileId": 64,
+                "downstreamBandwidthProfile": "Silver_Download",
+                "upstreamBandwidthProfile": "Silver_Upload",
+                "isDhcpRequired": true
+              }
+            ]
           },
           {
-            "id": "BBSM00000001-3",
-            "cTag": 900,
-            "sTag": 900,
-            "nasPortId": "BBSM00000001-3",
-            "circuitId": "BBSM00000001-3",
-            "remoteId": "BBSIM_OLT_0",
-            "technologyProfileId": 64,
-            "upstreamBandwidthProfile": "Default",
-            "downstreamBandwidthProfile": "Default"
-          },
-          {
-            "id": "BBSM00000001-4",
-            "cTag": 900,
-            "sTag": 900,
-            "nasPortId": "BBSM00000001-4",
-            "circuitId": "BBSM00000001-4",
-            "remoteId": "BBSIM_OLT_0",
-            "technologyProfileId": 64,
-            "upstreamBandwidthProfile": "Default",
-            "downstreamBandwidthProfile": "Default"
+            "id": "ALCLfa5b91c3-1",
+            "nasPortId": "PON 1/1/3/1:11.1.1",
+            "circuitId": "PON 1/1/3/1:11.1.1-CID",
+            "remoteId": "ATLEDGEVOLT1-RID",
+            "uniTagList": [
+              {
+                "ponCTag": 26,
+                "ponSTag": 13,
+                "technologyProfileId": 64,
+                "downstreamBandwidthProfile": "Gold_Download",
+                "upstreamBandwidthProfile": "Gold_Upload",
+                "isDhcpRequired": true
+              }
+            ]
           }
         ]
       },
@@ -105,9 +98,57 @@
           {
             "id": "Default",
             "air": 10000000,
-            "cbs": 5000,
+            "cbs": 1000,
+            "cir": 10000,
+            "ebs": 1000,
+            "eir": 20000
+          },
+          {
+            "id": "Bronze_Upload",
+            "air": 10000000,
+            "cbs": 2000,
+            "cir": 10000,
+            "ebs": 2000,
+            "eir": 20000
+          },
+          {
+            "id": "Bronze_Download",
+            "air": 10000000,
+            "cbs": 2000,
+            "cir": 75000,
+            "ebs": 2000,
+            "eir": 100000
+          },
+          {
+            "id": "Silver_Upload",
+            "air": 10000000,
+            "cbs": 3000,
+            "cir": 75000,
+            "ebs": 3000,
+            "eir": 100000
+          },
+          {
+            "id": "Silver_Download",
+            "air": 10000000,
+            "cbs": 3000,
+            "cir": 100000,
+            "ebs": 3000,
+            "eir": 200000
+          },
+          {
+            "id": "Gold_Upload",
+            "air": 10000000,
+            "cbs": 4000,
             "cir": 750000,
-            "ebs": 5000,
+            "ebs": 4000,
+            "eir": 1000000
+          },
+          {
+            "id": "Gold_Download",
+            "air": 10000000,
+            "cbs": 4000,
+            "cir": 750000,
+            "ebs": 4000,
             "eir": 1000000
           }
         ]
