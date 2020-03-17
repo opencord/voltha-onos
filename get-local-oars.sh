@@ -22,4 +22,5 @@ cp ../sadis/app/target/*.oar local_imports/oar/
 cp ../aaa/app/target/*.oar local_imports/oar/
 cp ../dhcpl2relay/app/target/*.oar local_imports/oar/
 cp ../kafka-onos/target/*.oar local_imports/oar/
-
+cp ../igmpproxy/target/*.oar local_imports/oar/
+cp ../mcast/target/*.oar local_imports/oar/
