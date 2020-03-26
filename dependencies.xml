@@ -24,13 +24,13 @@
     <version>fake</version>
 
     <properties>
-        <olt.version>4.0.2-SNAPSHOT</olt.version>
-        <sadis.version>5.0.1-SNAPSHOT</sadis.version>
-        <aaa.version>2.0.2-SNAPSHOT</aaa.version>
-        <dhcpl2relay.version>2.0.2-SNAPSHOT</dhcpl2relay.version>
-        <kafka.version>2.1.2-SNAPSHOT</kafka.version>
-        <igmpproxy.version>2.0.0-SNAPSHOT</igmpproxy.version>
-        <mcast.version>2.0.0-SNAPSHOT</mcast.version>
+        <olt.version>4.0.2</olt.version>
+        <sadis.version>5.0.1</sadis.version>
+        <aaa.version>2.0.2</aaa.version>
+        <dhcpl2relay.version>2.0.2</dhcpl2relay.version>
+        <kafka.version>2.2.0</kafka.version>
+        <igmpproxy.version>2.0.0</igmpproxy.version>
+        <mcast.version>2.0.0</mcast.version>
     </properties>
 
     <build>
@@ -78,14 +78,14 @@
                         </artifactItem>
                         <artifactItem>
                             <groupId>org.opencord</groupId>
-                            <artifactId>onos-app-igmpproxy</artifactId>
+                            <artifactId>onos-app-igmpproxy-app</artifactId>
                             <version>${igmpproxy.version}</version>
                             <type>oar</type>
                             <overWrite>true</overWrite>
                         </artifactItem>
                         <artifactItem>
                             <groupId>org.opencord</groupId>
-                            <artifactId>mcast</artifactId>
+                            <artifactId>mcast-app</artifactId>
                             <version>${mcast.version}</version>
                             <type>oar</type>
                             <overWrite>true</overWrite>
