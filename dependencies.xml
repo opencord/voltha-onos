@@ -31,6 +31,7 @@
         <kafka.version>2.3.0-SNAPSHOT</kafka.version>
         <igmpproxy.version>2.1.0-SNAPSHOT</igmpproxy.version>
         <mcast.version>2.1.0-SNAPSHOT</mcast.version>
+        <maclearner.version>1.0.0-SNAPSHOT</maclearner.version>
     </properties>
 
     <build>
@@ -87,6 +88,13 @@
                             <groupId>org.opencord</groupId>
                             <artifactId>mcast-app</artifactId>
                             <version>${mcast.version}</version>
+                            <type>oar</type>
+                            <overWrite>true</overWrite>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.opencord</groupId>
+                            <artifactId>maclearner-app</artifactId>
+                            <version>${maclearner.version}</version>
                             <type>oar</type>
                             <overWrite>true</overWrite>
                         </artifactItem>
