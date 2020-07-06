@@ -24,12 +24,12 @@
     <version>fake</version>
 
     <properties>
-        <olt.version>4.1.0</olt.version>
+        <olt.version>4.1.1</olt.version>
         <sadis.version>5.1.0</sadis.version>
         <aaa.version>2.1.0</aaa.version>
         <dhcpl2relay.version>2.1.0</dhcpl2relay.version>
-        <kafka.version>2.3.0</kafka.version>
-        <igmpproxy.version>2.1.0</igmpproxy.version>
+        <kafka.version>2.3.1</kafka.version>
+        <igmpproxy.version>2.1.1</igmpproxy.version>
         <mcast.version>2.1.0</mcast.version>
         <maclearner.version>1.0.0</maclearner.version>
     </properties>
