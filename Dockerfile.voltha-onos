@@ -66,6 +66,7 @@ ENV KARAF_VERSION=4.2.9
 ENV KARAF_ROOT=${ONOS}/apache-karaf-${KARAF_VERSION}
 ENV KARAF_M2=${KARAF_ROOT}/system
 ENV APPS_ROOT=${ONOS}/apps
+ENV JAVA_OPTS='-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:-UseContainerSupport -Dkaraf.log.console=INFO -Dds.lock.timeout.milliseconds=10000'
 
 COPY --from=install ${KARAF_M2}/ ${KARAF_M2}/
 RUN echo "${KARAF_M2} ${APPS_ROOT}"
