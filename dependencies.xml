@@ -25,10 +25,10 @@
 
     <properties>
         <olt.version>4.3.0-SNAPSHOT</olt.version>
-        <sadis.version>5.1.0</sadis.version>
+        <sadis.version>5.2.0-SNAPSHOT</sadis.version>
         <aaa.version>2.2.0-SNAPSHOT</aaa.version>
         <dhcpl2relay.version>2.3.0-SNAPSHOT</dhcpl2relay.version>
-        <kafka.version>2.4.0</kafka.version>
+        <kafka.version>2.5.0-SNAPSHOT</kafka.version>
         <igmpproxy.version>2.1.2</igmpproxy.version>
         <mcast.version>2.1.0</mcast.version>
     </properties>
