@@ -25,7 +25,7 @@
 
     <properties>
         <olt.version>4.3.0</olt.version>
-        <sadis.version>5.2.0</sadis.version>
+        <sadis.version>5.3.0-SNAPSHOT</sadis.version>
         <aaa.version>2.2.0</aaa.version>
         <dhcpl2relay.version>2.3.0</dhcpl2relay.version>
         <kafka.version>2.5.0</kafka.version>
