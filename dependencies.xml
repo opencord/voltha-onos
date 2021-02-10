@@ -29,7 +29,7 @@
         <aaa.version>2.2.0</aaa.version>
         <dhcpl2relay.version>2.3.0</dhcpl2relay.version>
         <kafka.version>2.5.0</kafka.version>
-        <igmpproxy.version>2.1.2</igmpproxy.version>
+        <igmpproxy.version>2.2.0-SNAPSHOT</igmpproxy.version>
         <mcast.version>2.1.0</mcast.version>
     </properties>
 
