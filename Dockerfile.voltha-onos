@@ -34,7 +34,7 @@ fi
 
 
 # Unpack and install specific apps from download stage
-FROM onosproject/onos:2.2-latest as install
+FROM onosproject/onos:2.5-latest as install
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV ONOS=/root/onos
@@ -58,7 +58,7 @@ RUN ./app-install.sh
 
 
 # Create the final image coping over the installed applications from the install stage
-FROM onosproject/onos:2.2-latest
+FROM onosproject/onos:2.5-latest
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV ONOS=/root/onos
@@ -77,6 +77,7 @@ RUN touch $ONOS/apps/org.onosproject.hostprovider/active
 RUN touch $ONOS/apps/org.onosproject.openflow-base/active
 RUN touch $ONOS/apps/org.onosproject.lldpprovider/active
 RUN touch $ONOS/apps/org.onosproject.mcast/active
+RUN touch $ONOS/apps/org.onosproject.segmentrouting/active
 
 # Label image
 ARG org_label_schema_version=unknown
