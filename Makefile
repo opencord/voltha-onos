@@ -40,30 +40,26 @@ endif
 
 .PHONY: docker-build
 
-# This should to be the first and default target in this Makefile
-help:
+# For each makefile target, add ## <description> on the target line and it will be listed by 'make help'
+help: ## Print help for each Makefile target
 	@echo "Usage: make [<target>]"
 	@echo "where available targets are:"
 	@echo
-	@echo "build             : Build the onos docker image with olt apps built-in"
-	@echo "help              : Print this help"
-	@echo "docker-push       : Push the docker images to an external repository"
-	@echo "clean             : Delete any locally copied oar files in local_imports"
-	@echo
-
+	@grep '^[[:alpha:]_-]*:.* ##' $(MAKEFILE_LIST) \
+		| sort | awk 'BEGIN {FS=":.* ## "}; {printf "%-25s : %s\n", $$1, $$2};'
 
 ## Docker targets
 
-build: docker-build
+build: docker-build ## alias for "docker-build"
 
-local-onosapps:
+local-onosapps: ## if LOCAL_ONOSAPPS=true runs the get-local-oars.sh
 	mkdir -p local_imports/oar
 ifdef LOCAL_ONOSAPPS
 	rm -rf local_imports/oar
 	./get-local-oars.sh
 endif
 
-docker-build: local-onosapps
+docker-build: local-onosapps ## build docker image: use DOCKER_REGISTRY, DOCKER_REPOSITORY and DOCKER_TAG to customize
 	docker build $(DOCKER_BUILD_ARGS) \
     -t ${ONOS_IMAGENAME} \
     --build-arg LOCAL_ONOSAPPS=$(LOCAL_ONOSAPPS) \
@@ -74,10 +70,13 @@ docker-build: local-onosapps
     --build-arg org_opencord_vcs_commit_date="${DOCKER_LABEL_COMMIT_DATE}" \
     -f Dockerfile.voltha-onos .
 
-docker-push:
+test: ## verify that if the version is released we're not pointing to SNAPSHOT apps
+	bash tests/version-check.sh
+
+docker-push: ## push to docker registy: use DOCKER_REGISTRY, DOCKER_REPOSITORY and DOCKER_TAG to customize
 	docker push ${ONOS_IMAGENAME}
 
-clean:
+clean: ## clean the build environment
 	rm -rf local_imports
 
 # end file
