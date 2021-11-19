@@ -14,7 +14,7 @@
 
 
 # Download and copy the specified onos apps
-FROM maven:3.6.1-jdk-8-alpine as download
+FROM maven:3.6.3-openjdk-11-slim as download
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV DOWNLOAD_ROOT=/download
