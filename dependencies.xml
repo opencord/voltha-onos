@@ -24,7 +24,7 @@
     <version>fake</version>
 
     <properties>
-        <olt.version>5.0.0</olt.version>
+        <olt.version>5.0.1</olt.version>
         <sadis.version>5.5.1</sadis.version>
         <aaa.version>2.5.0</aaa.version>
         <dhcpl2relay.version>2.6.0</dhcpl2relay.version>
