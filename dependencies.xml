@@ -93,6 +93,13 @@
                             <overWrite>true</overWrite>
                         </artifactItem>
                         <artifactItem>
+                            <groupId>org.opencord</groupId>
+                            <artifactId>maclearner-app</artifactId>
+                            <version>${maclearner.version}</version>
+                            <type>oar</type>
+                            <overWrite>true</overWrite>
+                        </artifactItem>
+                        <artifactItem>
                             <groupId>org.onosproject</groupId>
                             <artifactId>segmentrouting-app</artifactId>
                             <version>${segmentrouting.version}</version>
