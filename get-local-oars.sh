@@ -25,4 +25,5 @@ cp ../kafka-onos/target/*.oar local_imports/oar/
 cp ../igmpproxy/app/target/*.oar local_imports/oar/
 cp ../mcast/app/target/*.oar local_imports/oar/
 cp ../mac-learning/target/*.oar local_imports/oar/
+cp ../pppoeagent/app/target/*.oar local_imports/oar/
 cp ../trellis-control/app/target/*.oar local_imports/oar/
