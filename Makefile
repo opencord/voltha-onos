@@ -1,5 +1,5 @@
 #
-# Copyright 2016 the original author or authors.
+# Copyright 2016-2022 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ build: docker-build ## alias for "docker-build"
 local-onosapps: ## if LOCAL_ONOSAPPS=true runs the get-local-oars.sh
 	mkdir -p local_imports/oar
 ifdef LOCAL_ONOSAPPS
-	rm -rf local_imports/oar
+	$(RM) -r local_imports/oar
 	./get-local-oars.sh
 endif
 
@@ -77,6 +77,6 @@ docker-push: ## push to docker registy: use DOCKER_REGISTRY, DOCKER_REPOSITORY a
 	docker push ${ONOS_IMAGENAME}
 
 clean: ## clean the build environment
-	rm -rf local_imports
+	$(RM) -r local_imports
 
 # end file
