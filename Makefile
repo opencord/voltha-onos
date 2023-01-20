@@ -1,5 +1,6 @@
-#
-# Copyright 2016-2022 Open Networking Foundation (ONF) and the ONF Contributors
+# -*- makefile -*-
+# -----------------------------------------------------------------------
+# Copyright 2016-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +13,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+# -----------------------------------------------------------------------
+
+.PHONY: help
+.DEFAULT_GOAL := help
+
+TOP         ?= .
+MAKEDIR     ?= $(TOP)/makefiles
 
 # set default shell
 SHELL = bash -e -o pipefail
+
+##--------------------##
+##---]  INCLUDES  [---##
+##--------------------##
+include $(MAKEDIR)/include.mk
 
 # Variables
 VERSION                  ?= $(shell cat ./VERSION)
@@ -41,12 +53,11 @@ endif
 .PHONY: docker-build
 
 # For each makefile target, add ## <description> on the target line and it will be listed by 'make help'
-help: ## Print help for each Makefile target
-	@echo "Usage: make [<target>]"
-	@echo "where available targets are:"
+help :: ## Print help for each Makefile target
 	@echo
-	@grep '^[[:alpha:]_-]*:.* ##' $(MAKEFILE_LIST) \
-		| sort | awk 'BEGIN {FS=":.* ## "}; {printf "%-25s : %s\n", $$1, $$2};'
+	@grep --no-filename '^[[:alpha:]_-]*:.* ##' $(MAKEFILE_LIST) \
+	    | sort \
+	    | awk 'BEGIN {FS=":.* ## "}; {printf "  %-25s : %s\n", $$1, $$2};'
 
 ## Docker targets
 
