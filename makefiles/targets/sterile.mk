@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,34 +20,26 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
-yamllint      := $(env-clean) yamllint
-
-## -------------------------------
-## Add requirement(s) for checking
-## -------------------------------
-# yamllint-cfg := .yamllint
-yamllint-cfg := yamllint.helm
-yamllint-conf = $(wildcard $(yamllint-cfg) $(MAKEDIR)/lint/yaml/$(yamllint-cfg))
-yamllint-args += $(addprefix --config-file$(space),$(yamllint-conf))
-
-# yamllint-args := --no-warnings
-# yamllint-args := --strict
-
-yamllint-find := find . -name 'vendor' -prune
-yamllint-find += -o -name '*.yaml' -type f
-yamllint-find += -print0
+## -----------------------------------------------------------------------
+## Intent: Revert sandbox into a pristine checkout stage
+## -----------------------------------------------------------------------
+##   Note: Sterile target behavior differs from clean around handling of
+##         persistent content.  For ex removal of a python virtualenv adds
+##         extra overhead to development iteration:
+##           make clean   - preserve a virtual env
+##           make sterile - force reinstallation
+## -----------------------------------------------------------------------
+.PHONY: sterile
+sterile :: clean
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-lint lint-yaml:
-	$(HIDE)$(env-clean) $(yamllint-find) \
-	    | xargs -0 --no-run-if-empty -t -n1 $(yamllint) $(yamllint-args)
+help-verbose += help-sterile
+help-sterile ::
+	@echo
+	@echo '[MAKE: sterile]'
+	@echo '  sterile             make clean, also remove persistent content (~venv)'
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-help::
-	@echo "  lint-yaml                     Syntax check yaml sources"
-
-$(if $(DEBUG),$(warning ENTER))
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

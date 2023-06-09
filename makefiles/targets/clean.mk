@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-ifdef PYTHON_FILES
-  include $(ONF_MAKEDIR)/python/test/include.mk
-else
-  include $(ONF_MAKEDIR)/python/test/include.mk
-endif
+$(if $(DEBUG),$(warning ENTER))
+
+## -----------------------------------------------------------------------
+## Intent: Remove makefile generated content
+## -----------------------------------------------------------------------
+.PHONY: clean
+clean ::
+	$(RM) -r $(JOBCONFIG_DIR)
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-verbose += help-clean
+help-clean ::
+	@echo
+	@echo '[MAKE: clean]'
+	@echo '  clean               Remove makefile generated content'
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

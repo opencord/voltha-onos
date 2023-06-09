@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,29 +17,22 @@
 # SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
----
 
-yaml-files:
-  - '*.yaml'
-  - '*.yml'
-  - '.yamllint'
+$(if $(DEBUG),$(warning ENTER))
 
-rules:
-  document-start: disable
-  line-length:
-    max: 160
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+.PHONY: check
+check : lint lint-yaml lint-jjb
 
-# -----------------------------------------------------------------------
-# .. seealso: https://gerrit.opencord.org/plugins/gitiles/helm-repo-tools/+/refs/heads/master/yamllint.conf
-# -----------------------------------------------------------------------
-#
-# extends: default
-#
-#rules:
-#  empty-lines:
-#    max-end: 1
-#  line-length:
-#    max: 120
-#  braces:
-#    min-spaces-inside: 0
-#    max-spaces-inside: 1
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-verbose += help-check
+help-check ::
+	@echo
+	@echo '[MAKE: check]'
+	@echo '  check               pre-commit checking, with extra targets (default:NO, jenkins:FAIL)'
+
+$(if $(DEBUG),$(warning LEAVE))
+
+# [EOF]

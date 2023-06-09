@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors (ONF) and the ONF Contributors
+# Copyright 2021-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,19 +15,16 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-.PHONY: help
-help ::
-	@echo "Usage: $(MAKE) [options] [target] ..."
-#	@echo
-#	@echo "[CLEAN]"
-#	@echo "  clean                : Remove files created by the build"
-#	@echo "  distclean            : Remove build and testing artifacts and reports"
-#	@echo
-#	@echo "[LINT]"
-#	@echo "  lint                 : Shorthand for lint-style & lint-sanity"
-#	@echo "  lint-mod             : Verify the integrity of the 'mod' files"
-#	@echo "  sca                  : "
+# -----------------------------------------------------------------------
+# -----------------------------------------------------------------------
+help-summary ::
+	@echo '  help-gerrit         Display help for gerrit targets'
+
+help-verbose :: help-gerrit
+
+help-gerrit:
+	@echo
+	@echo '[GERRIT]'
+	@echo '  replication-status  Report sync status of the gerrit-to-github mirror.'
 
 # [EOF]

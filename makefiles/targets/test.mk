@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,24 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-ifdef PYTHON_FILES
-  include $(ONF_MAKEDIR)/python/test/include.mk
-else
-  include $(ONF_MAKEDIR)/python/test/include.mk
-endif
+$(if $(DEBUG),$(warning ENTER))
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+.PHONY: test
+test: $(venv-activate-script) $(JOBCONFIG_DIR)
+	$(activate) \
+	&& pipdeptree \
+	&& jenkins-jobs -l DEBUG test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-verbose += help-test
+help-test ::
+	@echo
+	@echo '[MAKE: test]'
+	@echo '  test                Perform testing that a jenkins job pull request will invoke'
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

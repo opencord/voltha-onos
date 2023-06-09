@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,24 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-ifdef PYTHON_FILES
-  include $(ONF_MAKEDIR)/python/test/include.mk
-else
-  include $(ONF_MAKEDIR)/python/test/include.mk
-endif
+$(if $(DEBUG),$(warning ENTER))
+
+## -----------------------------------------------------------------------
+## Intent: Sanity check incoming JJB config changes.
+##   Todo: Depend on makefiles/lint/jjb.mk :: lint-jjb
+## -----------------------------------------------------------------------
+# lint : lint-jjb
+lint-tox: lint-jjb
+	tox -e py310
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-verbose += help-tox
+help-tox ::
+	@echo
+	@echo '[MAKE: tox]'
+	@echo '  lint-tox            Python unit testing, sanity check incoming JJB changes.'
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

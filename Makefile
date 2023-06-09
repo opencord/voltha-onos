@@ -27,7 +27,8 @@ SHELL = bash -e -o pipefail
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include $(MAKEDIR)/include.mk
+include config.mk
+include makefiles/include.mk
 
 # Variables
 VERSION                  ?= $(shell cat ./VERSION)
@@ -87,7 +88,7 @@ test: ## verify that if the version is released we're not pointing to SNAPSHOT a
 docker-push: ## push to docker registy: use DOCKER_REGISTRY, DOCKER_REPOSITORY and DOCKER_TAG to customize
 	docker push ${ONOS_IMAGENAME}
 
-clean: ## clean the build environment
+clean :: ## clean the build environment
 	$(RM) -r local_imports
 
 # end file

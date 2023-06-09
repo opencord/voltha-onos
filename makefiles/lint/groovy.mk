@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,48 +18,34 @@
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
-xargs-n1-local := $(subst -t,$(null),$(xargs-n1))#   inhibit cmd display
 
-# Gather sources to check
-# TODO: implement deps, only check modified files
-make-check-find := find . -name 'vendor' -prune
-make-check-find += -o \( -iname makefile -o -name '*.mk' \)
-make-check-find += -type f -print0
+groovy-check      := npm-groovy-lint
 
-make-check      := $(MAKE)
-
-make-check-args += --dry-run
-make-check-args += --keep-going
-make-check-args += --warn-undefined-variables
-make-check-args += --no-print-directory
-
-# Quiet internal undef vars
-make-check-args += DEBUG=
+groovy-check-args := $(null)
+# groovy-check-args += --loglevel info
+# groovy-check-args += --ignorepattern
+# groovy-check-args += --verbose
 
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-ifndef NO-LINT-MAKEFILE
-  lint : lint-make
+ifndef NO-LINT-GROOVY
+  lint : lint-groovy
 endif
 
 ## -----------------------------------------------------------------------
-## Intent: Perform a lint check on makefile sources
+## Intent: Perform a lint check on command line script sources
 ## -----------------------------------------------------------------------
-lint-make-ignore += JSON_FILES=
-lint-make-ignore += YAML_FILES=
-lint-make:
+lint-groovy:
+	$(groovy-check) --version
 	@echo
-	@echo "** -----------------------------------------------------------------------"
-	@echo "** Makefile syntax checking"
-	@echo "** -----------------------------------------------------------------------"
-	$(HIDE)$(env-clean) $(make-check-find) \
-	    | $(xargs-n1-local) $(make-check) $(make-check-args) $(lint-make-ignore)
+	$(HIDE)$(env-clean) find . -iname '*.groovy' -print0 \
+  | $(xargs-n1) $(groovy-check) $(groovy-check-args)
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command help
 ## -----------------------------------------------------------------------
 help-summary ::
-	@echo '  lint-make           Syntax check [Mm]akefile and *.mk'
+	@echo '  lint-groovy          Syntax check groovy sources'
 
 # [EOF]
