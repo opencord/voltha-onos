@@ -95,4 +95,6 @@ docker-push: ## push to docker registy: use DOCKER_REGISTRY, DOCKER_REPOSITORY a
 clean :: ## clean the build environment
 	$(RM) -r local_imports
 
+sterile :: clean
+
 # end file
