@@ -18,12 +18,6 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
-TOP         ?= .
-MAKEDIR     ?= $(TOP)/makefiles
-
-# set default shell
-SHELL = bash -e -o pipefail
-
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
@@ -62,8 +56,12 @@ help :: ## Print help for each Makefile target
 
 ## Docker targets
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 build: docker-build ## alias for "docker-build"
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 local-onosapps: ## if LOCAL_ONOSAPPS=true runs the get-local-oars.sh
 	mkdir -p local_imports/oar
 ifdef LOCAL_ONOSAPPS
@@ -71,7 +69,11 @@ ifdef LOCAL_ONOSAPPS
 	./get-local-oars.sh
 endif
 
-docker-build: local-onosapps ## build docker image: use DOCKER_REGISTRY, DOCKER_REPOSITORY and DOCKER_TAG to customize
+## -----------------------------------------------------------------------
+## Intent: build docker image
+##   use DOCKER_REGISTRY, DOCKER_REPOSITORY and DOCKER_TAG to customize
+## -----------------------------------------------------------------------
+docker-build: local-onosapps ## build docker image
 	docker build $(DOCKER_BUILD_ARGS) \
     -t ${ONOS_IMAGENAME} \
     --build-arg LOCAL_ONOSAPPS=$(LOCAL_ONOSAPPS) \
@@ -82,6 +84,8 @@ docker-build: local-onosapps ## build docker image: use DOCKER_REGISTRY, DOCKER_
     --build-arg org_opencord_vcs_commit_date="${DOCKER_LABEL_COMMIT_DATE}" \
     -f Dockerfile.voltha-onos .
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 test: ## verify that if the version is released we're not pointing to SNAPSHOT apps
 	bash tests/version-check.sh
 

@@ -53,7 +53,7 @@ RUN apt-get install unzip -y
 
 # Install the applications
 COPY app-install.sh ./app-install.sh
-RUN chmod 755 ./app-install.sh
+RUN chmod 755 app-install.sh
 RUN ./app-install.sh
 
 
@@ -73,13 +73,24 @@ RUN echo "${KARAF_M2} ${APPS_ROOT}"
 COPY --from=install ${APPS_ROOT}/ ${APPS_ROOT}/
 COPY network-cfg.json $KARAF_ROOT/../config/network-cfg.json
 
-RUN touch $ONOS/apps/org.onosproject.hostprovider/active
-RUN touch $ONOS/apps/org.onosproject.openflow-base/active
-RUN touch $ONOS/apps/org.onosproject.lldpprovider/active
-RUN touch $ONOS/apps/org.onosproject.mcast/active
-RUN touch $ONOS/apps/org.onosproject.segmentrouting/active
+## -----------------------------------------------------------------------
+## Intent: Create package install directories.
+## -----------------------------------------------------------------------
+COPY etc/mkdir-touch-active.sh .
+RUN chmod 555 mkdir-touch-active.sh
+RUN ./mkdir-touch-active.sh\
+  $ONOS/apps/org.onosproject.hostprovider\
+  $ONOS/apps/org.onosproject.openflow-base\
+  $ONOS/apps/org.onosproject.lldpprovider\
+  $ONOS/apps/org.onosproject.mcast\
+  $ONOS/apps/org.onosproject.segmentrouting
 
+## [DEBUG]
+## RUN find "$ONOS/apps" -ls; exit 1
+
+## -----------------------------------------------------------------------
 # Label image
+## -----------------------------------------------------------------------
 ARG org_label_schema_version=unknown
 ARG org_label_schema_vcs_url=unknown
 ARG org_label_schema_vcs_ref=unknown
@@ -93,3 +104,5 @@ LABEL org.label-schema.schema-version=1.0 \
       org.label-schema.vcs-ref=$org_label_schema_vcs_ref \
       org.label-schema.build-date=$org_label_schema_build_date \
       org.opencord.vcs-commit-date=$org_opencord_vcs_commit_date
+
+# [EOF]
