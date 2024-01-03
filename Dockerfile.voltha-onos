@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 # Download and copy the specified onos apps
 FROM maven:3.6.3-openjdk-11-slim as download
+
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
+RUN <<BANNER
+    echo ""
+    echo "** -----------------------------------------------------------------------"
+    echo "** Configure maven settings (./mvn_settings.sh)"
+    echo "** -----------------------------------------------------------------------"
+BANNER
 
 # The ENV settings must be replicated below as they are not shared between stages
 ENV DOWNLOAD_ROOT=/download
@@ -24,6 +32,14 @@ COPY mvn_settings.* ${DOWNLOAD_ROOT}/
 RUN ./mvn_settings.sh
 ADD dependencies.xml .
 
+RUN <<BANNER
+    echo ""
+    echo "** -----------------------------------------------------------------------"
+    echo "** Copy onos artifacts into ${DOWNLOAD_ROOT}"
+    echo "** URL: https://maven.apache.org/plugins/maven-dependency-plugin/copy-mojo.html"
+    echo "** -----------------------------------------------------------------------"
+BANNER
+
 ARG LOCAL_ONOSAPPS
 COPY local_imports/ /local_imports/
 RUN if [ -n "$LOCAL_ONOSAPPS" ] ; then \
@@ -31,7 +47,6 @@ RUN if [ -n "$LOCAL_ONOSAPPS" ] ; then \
 else \
     mvn dependency:copy -Dmdep.useBaseVersion=true -DoutputDirectory=${DOWNLOAD_ROOT} -Dsilent=true -f dependencies.xml -s mvn_settings.xml ; \
 fi
-
 
 # Unpack and install specific apps from download stage
 FROM onosproject/onos:2.5.8 as install
@@ -45,17 +60,33 @@ ENV KARAF_M2=${KARAF_ROOT}/system
 ENV DOWNLOAD_ROOT=/download
 ENV APP_INSTALL_ROOT=/expand
 
+RUN <<BANNER
+    echo ""
+    echo "** -----------------------------------------------------------------------"
+    echo "** COPY --from=download ${DOWNLOAD_ROOT} ${DOWNLOAD_ROOT}"
+    echo "** -----------------------------------------------------------------------"
+BANNER
+
 # Copy the downloaded artifact to the install stage container
 COPY --from=download ${DOWNLOAD_ROOT} ${DOWNLOAD_ROOT}
 
+# https://askubuntu.com/questions/1095266/apt-get-update-failed-because-certificate-verification-failed-because-handshake
+RUN apt-get install --reinstall -y ca-certificates
+RUN rm /etc/apt/sources.list.d/zulu-openjdk.list && apt-get update
 RUN apt-get update
 RUN apt-get install unzip -y
+
+RUN <<BANNER
+    echo ""
+    echo "** -----------------------------------------------------------------------"
+    echo "** Install applications (./app-install.sh)"
+    echo "** -----------------------------------------------------------------------"
+BANNER
 
 # Install the applications
 COPY app-install.sh ./app-install.sh
 RUN chmod 755 app-install.sh
 RUN ./app-install.sh
-
 
 # Create the final image coping over the installed applications from the install stage
 FROM onosproject/onos:2.5.8
@@ -67,6 +98,13 @@ ENV KARAF_ROOT=${ONOS}/apache-karaf-${KARAF_VERSION}
 ENV KARAF_M2=${KARAF_ROOT}/system
 ENV APPS_ROOT=${ONOS}/apps
 ENV JAVA_OPTS='-XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:-UseContainerSupport -Dkaraf.log.console=INFO -Dds.lock.timeout.milliseconds=10000'
+
+RUN <<BANNER
+    echo ""
+    echo "** -----------------------------------------------------------------------"
+    echo "** COPY --from=install ${KARAF_M2}/ ${KARAF_M2}"
+    echo "** -----------------------------------------------------------------------"
+BANNER
 
 COPY --from=install ${KARAF_M2}/ ${KARAF_M2}/
 RUN echo "${KARAF_M2} ${APPS_ROOT}"
@@ -104,5 +142,12 @@ LABEL org.label-schema.schema-version=1.0 \
       org.label-schema.vcs-ref=$org_label_schema_vcs_ref \
       org.label-schema.build-date=$org_label_schema_build_date \
       org.opencord.vcs-commit-date=$org_opencord_vcs_commit_date
+
+## Inline as a debugging breakpoint
+# RUN <<FATAL
+#    echo ""
+#    echo "OUTA HERE"
+#    exit 1
+#FATAL
 
 # [EOF]
