@@ -1,4 +1,4 @@
-# Copyright 2018-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ COPY --from=download ${DOWNLOAD_ROOT} ${DOWNLOAD_ROOT}
 
 # https://askubuntu.com/questions/1095266/apt-get-update-failed-because-certificate-verification-failed-because-handshake
 RUN apt-get install --reinstall -y ca-certificates
-RUN rm /etc/apt/sources.list.d/zulu-openjdk.list && apt-get update
+RUN rm /etc/apt/sources.list.d/zulu-openjdk.list
 RUN apt-get update
 RUN apt-get install unzip -y
 

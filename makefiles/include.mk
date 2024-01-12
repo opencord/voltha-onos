@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2024 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2024 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 # https://gerrit.opencord.org/plugins/gitiles/onf-make
@@ -38,7 +38,7 @@ include $(ONF_MAKEDIR)/help/include.mk       # render target help
 include $(ONF_MAKEDIR)/utils/include.mk      # dependency-less helper macros
 include $(ONF_MAKEDIR)/etc/include.mk        # banner macros
 
-include $(ONF_MAKEDIR)/virtualenv.mk#        # lint-{jjb,python} depends on venv
+include $(ONF_MAKEDIR)/virtualenv/include.mk#  # lint depends on venv
 include $(ONF_MAKEDIR)/lint/include.mk
 # include $(ONF_MAKEDIR)/git-submodules.mk
 # include $(ONF_MAKEDIR)/gerrit/include.mk
