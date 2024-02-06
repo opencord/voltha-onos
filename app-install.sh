@@ -18,7 +18,6 @@
 ##-------------------##
 # set -euo pipefail
 umask 022
-declare -g HERE; HERE="$(pwd)"
 
 ## -----------------------------------------------------------------------
 ## Intent: Display an error mesage then exit with shell exit status
@@ -32,10 +31,54 @@ function error()
 ## -----------------------------------------------------------------------
 ## Intent: Verify required environment variables are set
 ## -----------------------------------------------------------------------
+## TODO: Covert into command line args
+## -----------------------------------------------------------------------
+# shellcheck disable=SC2120
 function init()
 {
-    [[ ! -v APP_INSTALL_ROOT ]] && error "Var APP_INSTALL_ROOT= is required"
-    [[ ! -v DOWNLOAD_ROOT ]]    && error "Var DOWNLOAD_ROOT= is required"
+    declare -a vars=()
+    vars+=('APP_INSTALL_ROOT')
+    vars+=('APPS_ROOT')
+    vars+=('DOWNLOAD_ROOT')
+    vars+=('KARAF_M2')
+
+    local var
+    for var in "${vars[@]}";
+    do
+        [[ ! -v "$var" ]] && { error "EnvVar ${var}= is required"; }
+    done
+
+    cat <<EOM
+
+** -----------------------------------------------------------------------
+** Running: $0 $@
+** -----------------------------------------------------------------------
+** $(declare -p APP_INSTALL_ROOT)
+** $(declare -p APPS_ROOT)
+** $(declare -p DOWNLOAD_ROOT)
+** -----------------------------------------------------------------------
+EOM
+
+    return
+}
+
+## -----------------------------------------------------------------------
+## Intent: Gather artifact *.oar files to unpack
+## -----------------------------------------------------------------------
+## GIVEN
+##   ref   An indirect array variable to return values through.
+##   dir   Directory to glob *.oar files from
+## -----------------------------------------------------------------------
+function get_oar_files()
+{
+    local -n ref=$1 ; shift
+    local dir="$1"  ; shift
+
+    readarray -t oars < <(find "$dir" -name '*.oar' -type f -print)
+    [[ ${#oars[@]} -eq 0 ]] && { error "No \*.oar files detected in $dir"; }
+
+    # shellcheck disable=SC2034
+    ref=("${oars[@]}")
     return
 }
 
@@ -43,36 +86,75 @@ function init()
 ##---]  MAIN  [---##
 ##----------------##
 
+declare arg
+while [[ $# -gt 0 ]]; do
+    arg="$1"; shift
+    case "$arg" in
+        '--debug') declare -g -i debug=1 ;;
+        *) echo "[SKIP] Unknown argument [$arg]" ;;
+    esac
+done
+
 init
 
-readarray -t OARS < <(find "$DOWNLOAD_ROOT" -name '*.oar')
-for oar in "${OARS[@]}"; do
+declare -a oars
+get_oar_files oars "$DOWNLOAD_ROOT"
+
+for oar in "${oars[@]}"; do
 
     app_xml="$APP_INSTALL_ROOT/app.xml"
     oar_basename="${oar##*/}"    # bash builtin
 
-    cd "$HERE" || error "cd $HERE failed"
-    echo "Installing application '$oar'"
+    cat <<EOF
+
+** -----------------------------------------------------------------------
+** Artifact: ${oar##*/}
+** -----------------------------------------------------------------------
+EOF
+
+    echo "Installing application '${oar##*/}'"
     rm -rf "$APP_INSTALL_ROOT"
     mkdir -p "$APP_INSTALL_ROOT"
-    cd "$APP_INSTALL_ROOT"  || error "cd $APP_INSTALL_ROOT failed"
-    cp -v "$oar" "$APP_INSTALL_ROOT"
-    unzip -oq -d . "$APP_INSTALL_ROOT/${oar_basename}"
 
-    readarray -t names < <(grep "name=" "$app_xml" \
-			       | sed 's/<app name="//g;s/".*//g')
-    [[ ${#names[@]} -gt 0 ]] || error "Detected invalid name gathering"
-    name="${names[1]}"
+    ## pushd()/popd(): cd $here && cd $root w/error checking
+    pushd "$APP_INSTALL_ROOT" >/dev/null \
+        || { error "pushd failed: $APP_INSTALL_ROOT"; }
+
+    [[ -v debug ]] && { echo "** Installing: $oar"; }
+
+    set -x
+    rsync --checksum "$oar" "$APP_INSTALL_ROOT/."
+    unzip -oq -d . "$APP_INSTALL_ROOT/${oar_basename}"
+    set +x
+
+    # ------------------------------------------------------------
+    # [IN]  <app name="org.opencord.kafka" origin="ONF" version="2.13.2"
+    # [OUT] declare -a names=([0]="org.opencord.kafka")
+    # ------------------------------------------------------------
+    readarray -t names < <(grep 'name=' "$app_xml" \
+			                   | sed 's/<app name="//g;s/".*//g')
+
+    [[ ${#names[@]} -gt 0 ]] \
+        || { error "Detected invalid name gathering"; }
+
+    printf '** %s\n' "$(declare -p names)"
+    name="${names[0]}"
     apps_name="$APPS_ROOT/$name"
 
     mkdir -p "$apps_name"
-    cp "$app_xml" "${apps_name}/app.xml"
-    touch "${apps_name}/active"
-    [ -f "$APP_INSTALL_ROOT/app.png" ] \
-	&& cp "$APP_INSTALL_ROOT/app.png" "${apps_name}/app.png"
+    rsync -v --checksum "$app_xml" "${apps_name}/app.xml"
+
+    touch "${apps_name}/active" # what is this used for (?)
+
+    declare app_png="$APP_INSTALL_ROOT/app.png"
+    [ -f "$app_png" ] && { rsync -v --checksum "$app_png" "${apps_name}/."; }
     cp "${APP_INSTALL_ROOT}/${oar_basename}" "${apps_name}/${name}.oar"
-    cp -rf "$APP_INSTALL_ROOT/m2/"* "$KARAF_M2"
+
+    rsync -rv --checksum "${APP_INSTALL_ROOT}/m2/." "$KARAF_M2/."
     rm -rf "$APP_INSTALL_ROOT"
+
+    popd >/dev/null || { error "popd failed: $APP_INSTALL_ROOT"; }
+
 done
 
 # [EOF]

@@ -74,7 +74,15 @@ COPY --from=download ${DOWNLOAD_ROOT} ${DOWNLOAD_ROOT}
 RUN apt-get install --reinstall -y ca-certificates
 RUN rm /etc/apt/sources.list.d/zulu-openjdk.list
 RUN apt-get update
-RUN apt-get install unzip -y
+
+# ----------------------------------------------------
+# [TODO] Morph into a loop: install pkg; pkg --version
+# ----------------------------------------------------
+RUN apt-get install -y rsync
+RUN apt-get install -y unzip
+
+RUN rsync --version | head -n1
+RUN unzip --help    | head -n1
 
 RUN <<BANNER
     echo ""
