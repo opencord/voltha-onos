@@ -145,4 +145,4 @@ clean :: ## clean the build environment
 ## -----------------------------------------------------------------------
 sterile :: clean
 
-# end file
+# [EOF]
