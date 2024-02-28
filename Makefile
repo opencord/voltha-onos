@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2016-2024 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2016-2024 Open Networking Foundation Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,6 +13,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# -----------------------------------------------------------------------
+# SPDX-FileCopyrightText: 2017-2024 Open Networking Foundation Contributors
+# SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
 .PHONY: help
@@ -49,6 +52,15 @@ endif
 
 # For each makefile target, add ## <description> on the target line and it will be listed by 'make help'
 help :: ## Print help for each Makefile target
+	@echo "Usage: $(MAKE) [options] [target] ..."
+
+	@printf '  %-33.33s %s' 'test' \
+	  'Run repository based test suites (test=)'
+	@printf '  %-33.33s %s' 'test-bats' \
+	  'Invoke bats harness shell test suites (wip)'
+	@printf '  %-33.33s %s' 'test-release' \
+	  'Verify released VERSION does ont contain dev/SNAPSHOT apps'
+
 	@echo
 	@grep --no-filename '^[[:alpha:]_-]*:.* ##' $(MAKEFILE_LIST) \
 	    | sort \
@@ -86,15 +98,51 @@ docker-build: local-onosapps ## build docker image
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-test: ## verify that if the version is released we're not pointing to SNAPSHOT apps
+test := $(null)
+
+ifdef TEST-BATS
+  test += test-bats
+endif
+
+ifdef RELEASE
+  test += test-release
+endif
+
+test :: $(test) ## verify that if the version is released we're not pointing to SNAPSHOT apps
+
+## -----------------------------------------------------------------------
+## Intent: Shell script testing with the bats test harness.
+##  Usage: make test TEST-BATS=1
+## -----------------------------------------------------------------------
+test-bats:
+	$(HIDE)$(MAKE) -C test/bats $@
+
+## -----------------------------------------------------------------------
+## Intent: Release based testing.
+## -----------------------------------------------------------------------
+## Usage:
+##   make test-release
+##   make test RELEASE=1
+## -----------------------------------------------------------------------
+## Legacy: VERSION validation has been defined as a default repository
+##         based test.  The target should be isolated and should only
+##         be required durring a release cycle.
+## -----------------------------------------------------------------------
+test-release :
 	bash tests/version-check.sh
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 docker-push: ## push to docker registy: use DOCKER_REGISTRY, DOCKER_REPOSITORY and DOCKER_TAG to customize
 	docker push ${ONOS_IMAGENAME}
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 clean :: ## clean the build environment
 	$(RM) -r local_imports
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 sterile :: clean
 
 # end file
