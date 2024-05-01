@@ -33,6 +33,8 @@ onf-mk-abs    ?= $(abspath $(lastword $(MAKEFILE_LIST)))
 onf-mk-top    := $(subst /include.mk,$(null),$(onf-mk-abs))
 ONF_MAKEDIR   := $(onf-mk-top)
 
+onf-mk-dir    ?= $(onf-mk-top)#              # fodder for transition.mk
+
 include $(ONF_MAKEDIR)/consts.mk
 include $(ONF_MAKEDIR)/help/include.mk       # render target help
 include $(ONF_MAKEDIR)/utils/include.mk      # dependency-less helper macros
@@ -42,6 +44,8 @@ include $(ONF_MAKEDIR)/virtualenv/include.mk#  # lint depends on venv
 include $(ONF_MAKEDIR)/lint/include.mk
 # include $(ONF_MAKEDIR)/git-submodules.mk
 # include $(ONF_MAKEDIR)/gerrit/include.mk
+
+include $(ONF_MAKEDIR)/commands/pre-commit/include.mk
 
 include $(ONF_MAKEDIR)/todo.mk
 include $(ONF_MAKEDIR)/help/variables.mk
